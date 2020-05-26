@@ -1,0 +1,12 @@
+.container{
+    padding: 5px;
+}
+.label{
+    padding: 15px;
+}
+.input{
+    background-color: lightgray;
+    border-radius: 10px;
+    padding: 8px;
+    border: none;
+}

@@ -1,0 +1,19 @@
+.container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 5px;
+}
+.stat{
+    padding: 10px;
+}
+.title{
+    cursor: pointer;
+    background-color: yellow;
+    border-radius: 15px;
+    padding: 10px;
+}
+.title:hover{
+    background-color: rgb(238, 238, 0);
+}
