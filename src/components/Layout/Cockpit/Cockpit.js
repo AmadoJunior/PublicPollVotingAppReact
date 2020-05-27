@@ -53,7 +53,6 @@ const Cockpit = () => {
         .catch((err) => {
             console.log(err);
         })
-        //CleanUp
         setPollState({
             title: ""
         })

@@ -23,13 +23,14 @@ const PollList = () => {
         async function fetchData() {
           Axios.get(apiURL)
           .then((res) => {
-            const tempArr = res.data;
-            tempArr.reverse();
+            const pollsArray = res.data;
+            pollsArray.reverse();
             setPollList({
               error: false,
               isLoaded: true,
-              pollArray: tempArr
+              pollArray: pollsArray
             })
+            
           })
           .catch(error => {
             setPollList({
@@ -60,10 +61,16 @@ const PollList = () => {
               pollArray: tempArr
             });
           })
+          socket.on("pollListSent", (cookies) => {
+            if(cookies !== undefined && cookies !== null){
+              localStorage.setItem("marked", cookies);
+            }
+          })
           
           return () => {
-            socket.off("voteCasted")
-            socket.off("newPoll")
+            socket.off("voteCasted");
+            socket.off("newPoll");
+            socket.off("pollListSent");
           }
       })
 
@@ -72,6 +79,13 @@ const PollList = () => {
         Axios.post(apiURL + ID, {optionTitle: optionTitle})
         .then((res) => {
             console.log(res.data.message);
+            if(localStorage.marked === undefined){
+              localStorage.setItem("marked", JSON.stringify([ID]));
+            } else {
+              let pollIDArr = JSON.parse(localStorage.marked);
+              pollIDArr.push(ID);
+              localStorage.setItem("marked", JSON.stringify(pollIDArr));
+            }
         })
         .catch((err) => {
             console.log(err);
@@ -81,7 +95,7 @@ const PollList = () => {
     //Render
     if(pollListState.error){
         return (
-            <h1>{pollListState.error}</h1>
+            <h1>{pollListState.error.message}</h1>
         )
     } else if(!pollListState.isLoaded){
         return(
@@ -100,7 +114,11 @@ const PollList = () => {
                         {
                             pollListState.pollArray.map((poll) => {
                                 return (
-                                    <Poll key={poll._id} title={poll.title} options={poll.options} ID={poll._id}></Poll>
+                                    <Poll 
+                                    key={poll._id}  
+                                    title={poll.title} 
+                                    options={poll.options} 
+                                    ID={poll._id}></Poll>
                                 )
                             })
                         }

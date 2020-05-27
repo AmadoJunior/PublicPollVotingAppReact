@@ -15,7 +15,8 @@ const Poll = (props) => {
                         key={index}
                         ID={props.ID}
                         title={option.title} 
-                        votes={option.votes}/>
+                        votes={option.votes}
+                        />
                         
                     )
                 })
