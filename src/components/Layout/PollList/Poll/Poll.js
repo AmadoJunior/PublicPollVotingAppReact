@@ -1,7 +1,7 @@
 import React from 'react';
 import Option from "./Option/Option";
 import styles from "./Poll.module.css";
-import Close from "./../../../../assets/close.png"
+import Close from "./../../../../img/close.png"
 
 const Poll = (props) => {
 
