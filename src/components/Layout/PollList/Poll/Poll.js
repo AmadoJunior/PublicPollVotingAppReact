@@ -1,6 +1,7 @@
 import React from 'react';
 import Option from "./Option/Option";
-import styles from "./Poll.module.css"
+import styles from "./Poll.module.css";
+import Close from "./../../../../assets/close.png"
 
 const Poll = (props) => {
 
@@ -9,9 +10,15 @@ const Poll = (props) => {
         sum += parseInt(option.votes);
     }
 
+
     return (
         <div className={styles.container}>
             <h2>{props.title}</h2>
+            <img 
+            alt="CloseBtn"
+            src={Close} 
+            className={styles.close}
+            onClick={() => props.rmPoll(props.ID)}></img>
             <div className={styles.optionsContainer}>
             {
                 props.options.map((option, index) => {

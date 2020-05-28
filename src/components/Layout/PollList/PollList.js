@@ -5,7 +5,8 @@ import Axios from "axios";
 import Poll from "./Poll/Poll"
 import Context from "./../../../context/context"
 
-const apiURL = "/api/poll/"
+const apiURL = "/api/poll/";
+const apiRmURL = "/api/poll/rm/";
 let socket;
 
 const PollList = () => {
@@ -48,7 +49,6 @@ const PollList = () => {
           socket.on("voteCasted", (pollArray) => {
             const tempArr = pollArray;
             tempArr.reverse();
-            console.log("voteCasted_Client");
             setPollList({
               ...pollListState,
               pollArray: tempArr
@@ -57,9 +57,12 @@ const PollList = () => {
           socket.on("newPoll", (pollArray) => {
             const tempArr = pollArray;
             tempArr.reverse();
-            setPollList({
-              ...pollListState,
-              pollArray: tempArr
+            setPollList((prevState) => {
+              return{
+                ...prevState,
+                pollArray: tempArr
+              }
+              
             });
           })
           socket.on("pollListSent", (cookies) => {
@@ -67,15 +70,35 @@ const PollList = () => {
               localStorage.setItem("marked", cookies);
             }
           })
+          socket.on("pollRemoved", (pollArray) => {
+            const tempArr = pollArray;
+            tempArr.reverse();
+            setPollList((prevState) => {
+              return{
+                ...prevState,
+                pollArray: tempArr
+              }
+            });
+          })
           
           return () => {
             socket.off("voteCasted");
             socket.off("newPoll");
             socket.off("pollListSent");
+            socket.off("pollRemoved");
           }
       })
 
     //Methods
+    const rmPoll = async (id) => {
+      Axios.delete(apiRmURL + id)
+      .then(res => {
+          console.log(res.data);
+      })
+      .catch(err => {
+          console.log(err);
+      })
+    }
     const vote = (optionTitle, ID) => {
         Axios.post(apiURL + ID, {optionTitle: optionTitle})
         .then((res) => {
@@ -116,6 +139,7 @@ const PollList = () => {
                             pollListState.pollArray.map((poll) => {
                                 return (
                                     <Poll 
+                                    rmPoll={rmPoll}
                                     key={poll._id}  
                                     title={poll.title} 
                                     options={poll.options} 
