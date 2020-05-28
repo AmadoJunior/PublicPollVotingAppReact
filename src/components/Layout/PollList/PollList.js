@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import styles from "./PollList.module.css";
 import io from "socket.io-client";
 import Axios from "axios";
 import Poll from "./Poll/Poll"
@@ -109,7 +110,7 @@ const PollList = () => {
                             vote: vote
                         }
                     }>
-                    <div>
+                    <div className={styles.container}>
                         <h1>Recent Polls</h1>
                         {
                             pollListState.pollArray.map((poll) => {

@@ -3,6 +3,12 @@ import Option from "./Option/Option";
 import styles from "./Poll.module.css"
 
 const Poll = (props) => {
+
+    let sum = 0;
+    for(let option of props.options){
+        sum += parseInt(option.votes);
+    }
+
     return (
         <div className={styles.container}>
             <h2>{props.title}</h2>
@@ -16,6 +22,7 @@ const Poll = (props) => {
                         ID={props.ID}
                         title={option.title} 
                         votes={option.votes}
+                        sum={sum}
                         />
                         
                     )

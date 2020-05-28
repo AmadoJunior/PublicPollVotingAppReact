@@ -63,14 +63,16 @@ const Cockpit = () => {
     return (
         <div className={styles.container}>
             <h1>Create Poll</h1>
-            <Input for="Title" handler={handleTitleChange} title={pollState.title}></Input>
+            <label>Poll Title:</label>
+            <Input handler={handleTitleChange} title={pollState.title}></Input>
 
             <div className={styles.add}>
+                <label>Options:</label>
                 <div>
                 {
                     optionsState.options.map((items) => {
                         return (
-                            <Input key={items.id} for="Option" id={items.id} handler={handleOptionInput} title={items.title}></Input>
+                            <Input key={items.id} id={items.id} handler={handleOptionInput} title={items.title}></Input>
                         )
                     })
                 }
